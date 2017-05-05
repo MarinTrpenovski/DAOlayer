@@ -11,6 +11,10 @@ public class Student {
 
     private String surname;
 
+    public Student() {
+
+    }
+
     public Long getId() {
         return id;
     }

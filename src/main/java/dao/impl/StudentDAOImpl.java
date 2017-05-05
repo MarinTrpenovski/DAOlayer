@@ -64,10 +64,49 @@ public class StudentDAOImpl extends DAOFactory implements StudentDAO{
     }
 
     public void delete(Long id) {
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("delete from student where student.id = ?");
+            pr.setLong(3, id);
+            int number = pr.executeUpdate();
+            conn.close();
 
+        } catch(Exception e){
+
+        }
     }
 
-    public void update(Long id) {
+    public void update(Object o) {
+        Connection conn;
+        Student st = (Student) o;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("update student set name = ? , surname = ? where student.id = ?");
+            pr.setString(1, st.getName());
+            pr.setString(2, st.getSurname());
+            pr.setLong(3, st.getId());
+            int number = pr.executeUpdate();
+            conn.close();
 
+        } catch(Exception e){
+
+        }
+    }
+
+    public void create(Object o) {
+        Connection conn;
+        Student st = (Student) o;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("insert into student (name, surname) VALUES ( ?, ?)");
+            pr.setString(1, st.getName());
+            pr.setString(2, st.getSurname());
+            int number = pr.executeUpdate();
+            conn.close();
+
+        } catch(Exception e){
+
+        }
     }
 }

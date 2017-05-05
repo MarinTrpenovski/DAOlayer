@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by marin.trpenovski on 4/27/2017.
  */
-public abstract class DAOFactory {
+public abstract class DAOFactory<T> {
 
     public abstract List<?> getAll() throws SQLException;
 
@@ -14,6 +14,8 @@ public abstract class DAOFactory {
 
     public abstract void delete(Long id);
 
-    public abstract void update(Long id);
+    public abstract void update(T t);
+
+    public abstract void create (T t);
 
 }
