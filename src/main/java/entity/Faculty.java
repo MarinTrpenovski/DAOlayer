@@ -11,6 +11,10 @@ public class Faculty {
 
     private Long parentId;
 
+    private Long parentIndex;
+
+    private String numericalMapping;
+
     private Long depth;
 
     private String name;
@@ -23,13 +27,14 @@ public class Faculty {
 
     }
 
-    public Faculty(Long id, Long parentId, Long depth, String name, String address, List<Student> studentList) {
+    public Faculty(Long id, Long parentId, Long parentIndex, String numericalMapping, Long depth, String name, String address) {
         this.id = id;
         this.parentId = parentId;
+        this.parentIndex = parentIndex;
+        this.numericalMapping = numericalMapping;
         this.depth = depth;
         this.name = name;
         this.address = address;
-        this.studentList = studentList;
     }
 
     public Long getId() {
@@ -78,5 +83,21 @@ public class Faculty {
 
     public void setDepth(Long depth) {
         this.depth = depth;
+    }
+
+    public Long getParentIndex() {
+        return parentIndex;
+    }
+
+    public void setParentIndex(Long parentIndex) {
+        this.parentIndex = parentIndex;
+    }
+
+    public String getNumericalMapping() {
+        return numericalMapping;
+    }
+
+    public void setNumericalMapping(String numericalMapping) {
+        this.numericalMapping = numericalMapping;
     }
 }
