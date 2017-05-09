@@ -2,7 +2,7 @@ package dao.impl;
 
 import connections.DefaultConnectionFactory;
 import dao.StudentDAO;
-import dao.generic.DAOFactory;
+import dao.generic.GenericDAO;
 import entity.Student;
 
 import java.sql.Connection;
@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * Created by marin.trpenovski on 4/27/2017.
  */
-public class StudentDAOImpl extends DAOFactory implements StudentDAO{
+public class StudentDAOImpl implements StudentDAO{
 
-    public List<Student> getAll() throws SQLException {
+    public List<Student> getAll() {
         List<Student> studentList = null;
-        Connection conn = null;
+        Connection conn;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select * from student");
@@ -36,8 +36,6 @@ public class StudentDAOImpl extends DAOFactory implements StudentDAO{
             conn.close();
             return studentList;
         } catch (Exception ex){
-            conn.close();
-        } finally {
 
         }
         return studentList;
@@ -58,7 +56,7 @@ public class StudentDAOImpl extends DAOFactory implements StudentDAO{
             conn.close();
 
         } catch(Exception e){
-
+            System.out.println("Error while fetching student " + e.getMessage());
         }
         return student;
     }
@@ -68,24 +66,23 @@ public class StudentDAOImpl extends DAOFactory implements StudentDAO{
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("delete from student where student.id = ?");
-            pr.setLong(3, id);
+            pr.setLong(1, id);
             int number = pr.executeUpdate();
             conn.close();
 
         } catch(Exception e){
-
+            System.out.println("Error while deleting student " + e.getMessage());
         }
     }
 
-    public void update(Object o) {
+    public void update(Student student) {
         Connection conn;
-        Student st = (Student) o;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("update student set name = ? , surname = ? where student.id = ?");
-            pr.setString(1, st.getName());
-            pr.setString(2, st.getSurname());
-            pr.setLong(3, st.getId());
+            pr.setString(1, student.getName());
+            pr.setString(2, student.getSurname());
+            pr.setLong(3, student.getId());
             int number = pr.executeUpdate();
             conn.close();
 
@@ -94,19 +91,18 @@ public class StudentDAOImpl extends DAOFactory implements StudentDAO{
         }
     }
 
-    public void create(Object o) {
+    public void create(Student student) {
         Connection conn;
-        Student st = (Student) o;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("insert into student (name, surname) VALUES ( ?, ?)");
-            pr.setString(1, st.getName());
-            pr.setString(2, st.getSurname());
+            pr.setString(1, student.getName());
+            pr.setString(2, student.getSurname());
             int number = pr.executeUpdate();
             conn.close();
 
         } catch(Exception e){
-
+            System.out.println("Error while creating student " + e.getMessage());
         }
     }
 }

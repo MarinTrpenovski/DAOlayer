@@ -9,6 +9,10 @@ public class Faculty {
 
     private Long id;
 
+    private Long parentId;
+
+    private Long depth;
+
     private String name;
 
     private String address;
@@ -19,8 +23,10 @@ public class Faculty {
 
     }
 
-    public Faculty(Long id, String name, String address, List<Student> studentList) {
+    public Faculty(Long id, Long parentId, Long depth, String name, String address, List<Student> studentList) {
         this.id = id;
+        this.parentId = parentId;
+        this.depth = depth;
         this.name = name;
         this.address = address;
         this.studentList = studentList;
@@ -58,4 +64,19 @@ public class Faculty {
         this.studentList = studentList;
     }
 
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public Long getDepth() {
+        return depth;
+    }
+
+    public void setDepth(Long depth) {
+        this.depth = depth;
+    }
 }

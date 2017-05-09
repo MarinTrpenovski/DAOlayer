@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 /**
  * Created by marin.trpenovski on 4/27/2017.
  */
@@ -10,6 +12,8 @@ public class Student {
     private String name;
 
     private String surname;
+
+    private List<Subject> subjectList;
 
     public Student() {
 
@@ -37,6 +41,14 @@ public class Student {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public List<Subject> getSubjectList() {
+        return subjectList;
+    }
+
+    public void setSubjectList(List<Subject> subjectList) {
+        this.subjectList = subjectList;
     }
 
     public Student (Long id, String name, String surname){
