@@ -19,7 +19,7 @@ import java.util.List;
 public class FacultyDAOImpl implements FacultyDAO {
 
     @Override
-    public List<Faculty> getAll() throws SQLException {
+    public List<Faculty> getAll() {
         List<Faculty> facultyList = null;
         Connection conn;
         try {
@@ -35,7 +35,8 @@ public class FacultyDAOImpl implements FacultyDAO {
                 Long depth = rs.getLong("depth");
                 String name = rs.getString("name");
                 String address = rs.getString("address");
-                Faculty faculty =  new Faculty(id, parentId, parentIndex, numericalMapping, depth,name, address);
+                Long universityId = rs.getLong("universityId");
+                Faculty faculty =  new Faculty(id, parentId, parentIndex, numericalMapping, depth,name, address, universityId);
                 facultyList.add(faculty);
 
             }
@@ -67,13 +68,14 @@ public class FacultyDAOImpl implements FacultyDAO {
         Connection conn;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("update faculty set parentId = ?, parentIndex = ?, nummericalMapping = ?, depth = ?, name = ? , address = ? where student.id = ?");
+            PreparedStatement pr  = conn.prepareStatement("update faculty set parentId = ?, parentIndex = ?, nummericalMapping = ?, depth = ?, name = ? , address = ?, universityId = ?, where student.id = ?");
             pr.setLong(1, faculty.getParentId());
             pr.setLong(2, faculty.getParentIndex());
             pr.setString(3, faculty.getNumericalMapping());
             pr.setLong(4, faculty.getDepth());
             pr.setString(5, faculty.getName());
             pr.setString(6, faculty.getAddress());
+            pr.setLong(7, faculty.getUniversityId());
             int number = pr.executeUpdate();
             conn.close();
 
@@ -87,7 +89,7 @@ public class FacultyDAOImpl implements FacultyDAO {
         Connection conn;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("insert into faculty (parentId, parentIndex, nummericalMapping, depth, name, address) VALUES ( ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pr  = conn.prepareStatement("insert into faculty (parentId, parentIndex, nummericalMapping, depth, name, address, universityId) VALUES ( ?, ?, ?, ?, ?, ?, ?)");
             pr.setLong(1, faculty.getParentId());
             pr.setLong(2, faculty.getParentIndex());
 
@@ -95,6 +97,7 @@ public class FacultyDAOImpl implements FacultyDAO {
             pr.setLong(4, faculty.getDepth());
             pr.setString(5, faculty.getName());
             pr.setString(6, faculty.getAddress());
+            pr.setLong(7, faculty.getUniversityId());
             int number = pr.executeUpdate();
             conn.close();
 
@@ -114,7 +117,7 @@ public class FacultyDAOImpl implements FacultyDAO {
             pr.setLong(1, id);
             ResultSet rs = pr.executeQuery();
             rs.next();
-            faculty = new Faculty(rs.getLong("id"),rs.getLong("parentId"), rs.getLong("parentIndex"), rs.getString("numericalmapping"), rs.getLong("depth"), rs.getString("name"), rs.getString("address"));
+            faculty = new Faculty(rs.getLong("id"),rs.getLong("parentId"), rs.getLong("parentIndex"), rs.getString("numericalmapping"), rs.getLong("depth"), rs.getString("name"), rs.getString("address"), rs.getLong("universityId"));
             conn.close();
             return faculty;
         } catch(Exception e){

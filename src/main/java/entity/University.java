@@ -18,11 +18,10 @@ public class University {
     public University() {
     }
 
-    public University(Long id, String name, String location, List<Faculty> faculties) {
+    public University(Long id, String name, String location) {
         this.id = id;
         this.name = name;
         this.location = location;
-        this.faculties = faculties;
     }
 
     public Long getId() {

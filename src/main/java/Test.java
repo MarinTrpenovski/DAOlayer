@@ -24,12 +24,15 @@ public class Test {
         try {
             Integer id = 3;
             Connection conn = connection.getConnection();
-            PreparedStatement pr  = conn.prepareStatement("delete from student where student.id = ?");
-            pr.setLong(1, id);
-            int number = pr.executeUpdate();
+            PreparedStatement pr  = conn.prepareStatement("select avg(credits) as average from subject where subject.id = 1 or subject.id = 3");
+
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("from while " + rs.getInt("average"));
+            }
             //rs.next();
             //Student student = new Student(rs.getLong("id"), rs.getString("name"), rs.getString("surname"));
-            System.out.println("Connected " + number);
+            System.out.println("Connected " + rs.getStatement());
 
         } catch (Exception e) {
             System.out.println("Exception is" + e.getMessage());

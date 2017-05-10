@@ -87,7 +87,7 @@ public class StudentDAOImpl implements StudentDAO{
             conn.close();
 
         } catch(Exception e){
-
+            System.out.println("Error while updating student " + e.getMessage());
         }
     }
 
@@ -103,6 +103,136 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while creating student " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void average(String columnName, String tableName) {
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("select avg("+ columnName + ") as avg from " + tableName);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("average sum is  " + rs.getInt("avg"));
+            }
+            conn.close();
+
+        } catch(Exception e){
+            System.out.println("Error while calculating average " + e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void averageWithCondition(String columnName, String tableName, String condition) {
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("select avg("+ columnName + ") as avg from " + tableName + " " + condition);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("average is  " + rs.getInt("avg"));
+            }
+            conn.close();
+
+        } catch(Exception e){
+            System.out.println("Error while calculating average " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void getAllRecords(String columnName, String tableName) {
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("select count("+ columnName + ") as total from " + tableName);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("number of record is  " + rs.getInt("total"));
+            }
+
+        } catch(Exception e){
+            System.out.println("Error while calculating number of record " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void getAllRecordsWithCondition(String columnName, String tableName, String condition) {
+
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("select count("+ columnName + ") as total from " + tableName + " " + condition);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("number of record is  " + rs.getInt("total"));
+            }
+
+        } catch(Exception e){
+            System.out.println("Error while creating student " + e.getMessage());
+        }
+
+
+    }
+
+    @Override
+    public void getMaxRecord(String columnName, String tableName) {
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("select max(" + columnName +") as max from " + tableName);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("max record is  " + rs.getInt("max"));
+            }
+        } catch (Exception e) {
+            System.out.println("Error while fetching max record " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void getMinRecord(String columnName, String tableName) {
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("select min(" + columnName +") as min from " + tableName);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("min record is  " + rs.getInt("min"));
+            }
+        } catch (Exception e) {
+            System.out.println("Error while fetching min record " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void getMaxRecordWithCondition(String columnName, String tableName, String condition) {
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("select max(" + columnName +") as max from " + tableName + " " + condition);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("max record is  " + rs.getInt("max"));
+            }
+        } catch (Exception e) {
+            System.out.println("Error while fetching max record " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void getMinRecordWithCondition(String columnName, String tableName, String condition) {
+        Connection conn;
+        try {
+            conn = DefaultConnectionFactory.getInstance().getConnection();
+            PreparedStatement pr  = conn.prepareStatement("select min(" + columnName +") as min from " + tableName + " " + condition);
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()) {
+                System.out.println("max record is  " + rs.getInt("min"));
+            }
+        } catch (Exception e) {
+            System.out.println("Error while fetching min record " + e.getMessage());
         }
     }
 }
