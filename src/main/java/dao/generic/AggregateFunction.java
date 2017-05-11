@@ -21,4 +21,8 @@ public interface AggregateFunction {
 
     void getMinRecordWithCondition(String columnName, String tableName, String condition);
 
+    void getSum(String columnName, String tableName);
+
+    void getSumWithCondition(String columnName, String tableName, String condition);
+
 }

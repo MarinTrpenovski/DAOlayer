@@ -26,10 +26,7 @@ CREATE TABLE `university` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `location` varchar(100) NOT NULL,
-  `facultyId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `facultyId_idx` (`facultyId`),
-  CONSTRAINT `facultyId` FOREIGN KEY (`facultyId`) REFERENCES `faculty` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -51,4 +48,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-09 15:49:33
+-- Dump completed on 2017-05-11 16:31:04

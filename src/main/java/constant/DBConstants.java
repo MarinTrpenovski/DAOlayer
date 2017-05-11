@@ -10,6 +10,6 @@ public class DBConstants {
     public static final String URL = "jdbc:mysql://127.0.0.1:3306/exercise?serverTimezone=UTC&useSSL=false";
     public static final String USERNAME = "root";
     public static final String PASSWORD = "admin";
-
+    public static final Integer MAX_CONNECTION = 5;
 
 }

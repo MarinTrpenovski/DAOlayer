@@ -235,4 +235,14 @@ public class StudentDAOImpl implements StudentDAO{
             System.out.println("Error while fetching min record " + e.getMessage());
         }
     }
+
+    @Override
+    public void getSum(String columnName, String tableName) {
+
+    }
+
+    @Override
+    public void getSumWithCondition(String columnName, String tableName, String condition) {
+
+    }
 }

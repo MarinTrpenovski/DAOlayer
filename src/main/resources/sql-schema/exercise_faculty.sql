@@ -30,7 +30,10 @@ CREATE TABLE `faculty` (
   `numericalmapping` varchar(300) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL,
   `address` varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `universityId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `universityId_idx` (`universityId`),
+  CONSTRAINT `universityId` FOREIGN KEY (`universityId`) REFERENCES `university` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -40,7 +43,7 @@ CREATE TABLE `faculty` (
 
 LOCK TABLES `faculty` WRITE;
 /*!40000 ALTER TABLE `faculty` DISABLE KEYS */;
-INSERT INTO `faculty` VALUES (1,NULL,0,NULL,NULL,'Technical','Partizanska'),(2,NULL,0,NULL,NULL,'Art','Teodosij Gologanov'),(3,NULL,0,NULL,NULL,'Medicine','Vodnjanska'),(4,1,1,NULL,NULL,'Elektro','ilindenska'),(5,1,1,NULL,NULL,'Masinski','Ilindenska'),(6,1,1,NULL,NULL,'Prirodno-matematicki','mavrovka'),(7,6,2,NULL,NULL,'Matematicki','Mavrovka'),(8,6,2,NULL,NULL,'hemiski','Mavrovka'),(9,2,1,NULL,NULL,'Muzicka Akademija','Ruzveltova'),(10,2,1,NULL,NULL,'Likovna Akademija','Aminta treti'),(11,3,1,NULL,NULL,'Medicinski Fakultet','Vodnjanska'),(12,3,1,NULL,NULL,'Stomatoloski Fakultet','Vodnjanska');
+INSERT INTO `faculty` VALUES (1,NULL,0,NULL,NULL,'Technical','Partizanska',NULL),(2,NULL,0,NULL,NULL,'Art','Teodosij Gologanov',NULL),(3,NULL,0,NULL,NULL,'Medicine','Vodnjanska',NULL),(4,1,1,NULL,NULL,'Elektro','ilindenska',NULL),(5,1,1,NULL,NULL,'Masinski','Ilindenska',NULL),(6,1,1,NULL,NULL,'Prirodno-matematicki','mavrovka',NULL),(7,6,2,NULL,NULL,'Matematicki','Mavrovka',NULL),(8,6,2,NULL,NULL,'hemiski','Mavrovka',NULL),(9,2,1,NULL,NULL,'Muzicka Akademija','Ruzveltova',NULL),(10,2,1,NULL,NULL,'Likovna Akademija','Aminta treti',NULL),(11,3,1,NULL,NULL,'Medicinski Fakultet','Vodnjanska',NULL),(12,3,1,NULL,NULL,'Stomatoloski Fakultet','Vodnjanska',NULL);
 /*!40000 ALTER TABLE `faculty` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-09 15:49:33
+-- Dump completed on 2017-05-11 16:31:04

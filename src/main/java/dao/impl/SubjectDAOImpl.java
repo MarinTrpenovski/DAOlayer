@@ -37,10 +37,9 @@ public class SubjectDAOImpl implements SubjectDAO {
                 subjects.add(student);
 
             }
-            conn.close();
             return subjects;
         } catch (Exception ex){
-            System.out.println("Excetion while fetching all subjects " + ex.getMessage());
+            System.out.println("Exception while fetching all subjects " + ex.getMessage());
         }
         return subjects;
 
