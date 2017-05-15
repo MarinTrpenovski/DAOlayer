@@ -1,10 +1,13 @@
 package dao.impl;
 
+import DBCP_DB_Pooling.DataSource;
 import connections.DefaultConnectionFactory;
 import dao.StudentDAO;
 import dao.generic.GenericDAO;
 import entity.Student;
 
+import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,9 +20,9 @@ import java.util.List;
  */
 public class StudentDAOImpl implements StudentDAO{
 
-    public List<Student> getAll() {
+    public List<Student> getAll() throws PropertyVetoException, SQLException, IOException {
         List<Student> studentList = null;
-        Connection conn;
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select * from student");
@@ -37,15 +40,17 @@ public class StudentDAOImpl implements StudentDAO{
             return studentList;
         } catch (Exception ex){
 
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
         return studentList;
 
     }
 
-    public Student getOne(Long id) {
+    public Student getOne(Long id) throws PropertyVetoException, SQLException, IOException {
 
         Student student = null;
-        Connection conn;
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select * from student as st where st.id = ?");
@@ -57,12 +62,14 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while fetching student " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
         return student;
     }
 
-    public void delete(Long id) {
-        Connection conn;
+    public void delete(Long id) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("delete from student where student.id = ?");
@@ -72,11 +79,13 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while deleting student " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
-    public void update(Student student) {
-        Connection conn;
+    public void update(Student student) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("update student set name = ? , surname = ? where student.id = ?");
@@ -88,11 +97,13 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while updating student " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
-    public void create(Student student) {
-        Connection conn;
+    public void create(Student student) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("insert into student (name, surname) VALUES ( ?, ?)");
@@ -103,12 +114,14 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while creating student " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void average(String columnName, String tableName) {
-        Connection conn;
+    public void average(String columnName, String tableName) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select avg("+ columnName + ") as avg from " + tableName);
@@ -120,13 +133,15 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while calculating average " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
 
     }
 
     @Override
-    public void averageWithCondition(String columnName, String tableName, String condition) {
-        Connection conn;
+    public void averageWithCondition(String columnName, String tableName, String condition) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select avg("+ columnName + ") as avg from " + tableName + " " + condition);
@@ -138,12 +153,14 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while calculating average " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void getAllRecords(String columnName, String tableName) {
-        Connection conn;
+    public void getAllRecords(String columnName, String tableName) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select count("+ columnName + ") as total from " + tableName);
@@ -154,13 +171,15 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while calculating number of record " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void getAllRecordsWithCondition(String columnName, String tableName, String condition) {
+    public void getAllRecordsWithCondition(String columnName, String tableName, String condition) throws PropertyVetoException, SQLException, IOException {
 
-        Connection conn;
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select count("+ columnName + ") as total from " + tableName + " " + condition);
@@ -171,14 +190,15 @@ public class StudentDAOImpl implements StudentDAO{
 
         } catch(Exception e){
             System.out.println("Error while creating student " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
-
 
     }
 
     @Override
-    public void getMaxRecord(String columnName, String tableName) {
-        Connection conn;
+    public void getMaxRecord(String columnName, String tableName) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select max(" + columnName +") as max from " + tableName);
@@ -188,12 +208,14 @@ public class StudentDAOImpl implements StudentDAO{
             }
         } catch (Exception e) {
             System.out.println("Error while fetching max record " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void getMinRecord(String columnName, String tableName) {
-        Connection conn;
+    public void getMinRecord(String columnName, String tableName) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select min(" + columnName +") as min from " + tableName);
@@ -203,12 +225,14 @@ public class StudentDAOImpl implements StudentDAO{
             }
         } catch (Exception e) {
             System.out.println("Error while fetching min record " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void getMaxRecordWithCondition(String columnName, String tableName, String condition) {
-        Connection conn;
+    public void getMaxRecordWithCondition(String columnName, String tableName, String condition) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select max(" + columnName +") as max from " + tableName + " " + condition);
@@ -218,12 +242,14 @@ public class StudentDAOImpl implements StudentDAO{
             }
         } catch (Exception e) {
             System.out.println("Error while fetching max record " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void getMinRecordWithCondition(String columnName, String tableName, String condition) {
-        Connection conn;
+    public void getMinRecordWithCondition(String columnName, String tableName, String condition) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select min(" + columnName +") as min from " + tableName + " " + condition);
@@ -233,6 +259,8 @@ public class StudentDAOImpl implements StudentDAO{
             }
         } catch (Exception e) {
             System.out.println("Error while fetching min record " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 

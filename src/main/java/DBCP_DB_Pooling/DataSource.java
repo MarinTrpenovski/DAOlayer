@@ -40,12 +40,19 @@ public class DataSource {
     }
 
     public synchronized Connection getConnection() throws SQLException{
-
         return this.ds.getConnection();
     }
 
-    public int getNumIdle () {
-        return this.ds.getNumActive();
+    public synchronized void closeConnection(Connection conn){
+
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e){
+                System.out.println("Error while closing connection " + e.getMessage());
+            }
+        }
+
     }
 
 }

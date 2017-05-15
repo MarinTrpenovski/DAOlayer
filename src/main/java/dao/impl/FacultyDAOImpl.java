@@ -1,11 +1,14 @@
 package dao.impl;
 
+import DBCP_DB_Pooling.DataSource;
 import connections.DefaultConnectionFactory;
 import dao.FacultyDAO;
 import dao.generic.GenericDAO;
 import entity.Faculty;
 import entity.Student;
 
+import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,9 +22,9 @@ import java.util.List;
 public class FacultyDAOImpl implements FacultyDAO {
 
     @Override
-    public List<Faculty> getAll() {
+    public List<Faculty> getAll() throws PropertyVetoException, SQLException, IOException {
         List<Faculty> facultyList = null;
-        Connection conn;
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select * from faculty");
@@ -40,17 +43,19 @@ public class FacultyDAOImpl implements FacultyDAO {
                 facultyList.add(faculty);
 
             }
-            conn.close();
+
             return facultyList;
         } catch (Exception ex){
             System.out.println("Error while fetching Faculties " + ex.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
         return facultyList;
     }
 
     @Override
-    public void delete(Long id) {
-        Connection conn;
+    public void delete(Long id) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("delete from faculty where faculty.id = ?");
@@ -60,12 +65,14 @@ public class FacultyDAOImpl implements FacultyDAO {
 
         } catch(Exception e){
             System.out.println("Error while deleting faculty " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void update(Faculty faculty) {
-        Connection conn;
+    public void update(Faculty faculty) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("update faculty set parentId = ?, parentIndex = ?, nummericalMapping = ?, depth = ?, name = ? , address = ?, universityId = ?, where student.id = ?");
@@ -81,12 +88,14 @@ public class FacultyDAOImpl implements FacultyDAO {
 
         } catch(Exception e){
             System.out.println("Error while updating faculty" + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void create(Faculty faculty) {
-        Connection conn;
+    public void create(Faculty faculty) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("insert into faculty (parentId, parentIndex, nummericalMapping, depth, name, address, universityId) VALUES ( ?, ?, ?, ?, ?, ?, ?)");
@@ -103,14 +112,16 @@ public class FacultyDAOImpl implements FacultyDAO {
 
         } catch(Exception e){
             System.out.println("Error while creating student " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public Faculty getOne(Long id) {
+    public Faculty getOne(Long id) throws PropertyVetoException, SQLException, IOException {
 
         Faculty faculty = null;
-        Connection conn;
+        Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select * from faculty as fac where fac.id = ?");
@@ -122,6 +133,8 @@ public class FacultyDAOImpl implements FacultyDAO {
             return faculty;
         } catch(Exception e){
             System.out.println("Error while fetching faculty " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
         }
         return faculty;
 

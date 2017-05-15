@@ -1,5 +1,7 @@
 package dao.generic;
 
+import java.beans.PropertyVetoException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.List;
@@ -9,14 +11,14 @@ import java.util.List;
  */
 public interface GenericDAO<T, ID extends Serializable>{
 
-    List<T> getAll();
+    List<T> getAll() throws PropertyVetoException, SQLException, IOException;
 
-    <T> T getOne(ID id);
+    <T> T getOne(ID id) throws PropertyVetoException, SQLException, IOException;
 
-    void delete(ID id);
+    void delete(ID id) throws PropertyVetoException, SQLException, IOException;
 
-    void update(T t);
+    void update(T t) throws PropertyVetoException, SQLException, IOException;
 
-    void create (T t);
+    void create (T t) throws PropertyVetoException, SQLException, IOException;
 
 }
