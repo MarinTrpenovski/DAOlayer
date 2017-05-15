@@ -3,7 +3,6 @@ package dao.impl;
 import DBCP_DB_Pooling.DataSource;
 import connections.DefaultConnectionFactory;
 import dao.StudentDAO;
-import dao.generic.GenericDAO;
 import entity.Student;
 
 import java.beans.PropertyVetoException;
@@ -120,157 +119,12 @@ public class StudentDAOImpl implements StudentDAO{
     }
 
     @Override
-    public void average(String columnName, String tableName) throws PropertyVetoException, SQLException, IOException {
-        Connection conn = null;
-        try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("select avg("+ columnName + ") as avg from " + tableName);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                System.out.println("average sum is  " + rs.getInt("avg"));
-            }
-            conn.close();
-
-        } catch(Exception e){
-            System.out.println("Error while calculating average " + e.getMessage());
-        } finally {
-            DataSource.getInstance().closeConnection(conn);
-        }
-
+    public Integer getAverageGrade() {
+        return null;
     }
 
     @Override
-    public void averageWithCondition(String columnName, String tableName, String condition) throws PropertyVetoException, SQLException, IOException {
-        Connection conn = null;
-        try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("select avg("+ columnName + ") as avg from " + tableName + " " + condition);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                System.out.println("average is  " + rs.getInt("avg"));
-            }
-            conn.close();
-
-        } catch(Exception e){
-            System.out.println("Error while calculating average " + e.getMessage());
-        } finally {
-            DataSource.getInstance().closeConnection(conn);
-        }
-    }
-
-    @Override
-    public void getAllRecords(String columnName, String tableName) throws PropertyVetoException, SQLException, IOException {
-        Connection conn = null;
-        try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("select count("+ columnName + ") as total from " + tableName);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                System.out.println("number of record is  " + rs.getInt("total"));
-            }
-
-        } catch(Exception e){
-            System.out.println("Error while calculating number of record " + e.getMessage());
-        } finally {
-            DataSource.getInstance().closeConnection(conn);
-        }
-    }
-
-    @Override
-    public void getAllRecordsWithCondition(String columnName, String tableName, String condition) throws PropertyVetoException, SQLException, IOException {
-
-        Connection conn = null;
-        try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("select count("+ columnName + ") as total from " + tableName + " " + condition);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                System.out.println("number of record is  " + rs.getInt("total"));
-            }
-
-        } catch(Exception e){
-            System.out.println("Error while creating student " + e.getMessage());
-        } finally {
-            DataSource.getInstance().closeConnection(conn);
-        }
-
-    }
-
-    @Override
-    public void getMaxRecord(String columnName, String tableName) throws PropertyVetoException, SQLException, IOException {
-        Connection conn = null;
-        try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("select max(" + columnName +") as max from " + tableName);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                System.out.println("max record is  " + rs.getInt("max"));
-            }
-        } catch (Exception e) {
-            System.out.println("Error while fetching max record " + e.getMessage());
-        } finally {
-            DataSource.getInstance().closeConnection(conn);
-        }
-    }
-
-    @Override
-    public void getMinRecord(String columnName, String tableName) throws PropertyVetoException, SQLException, IOException {
-        Connection conn = null;
-        try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("select min(" + columnName +") as min from " + tableName);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                System.out.println("min record is  " + rs.getInt("min"));
-            }
-        } catch (Exception e) {
-            System.out.println("Error while fetching min record " + e.getMessage());
-        } finally {
-            DataSource.getInstance().closeConnection(conn);
-        }
-    }
-
-    @Override
-    public void getMaxRecordWithCondition(String columnName, String tableName, String condition) throws PropertyVetoException, SQLException, IOException {
-        Connection conn = null;
-        try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("select max(" + columnName +") as max from " + tableName + " " + condition);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                System.out.println("max record is  " + rs.getInt("max"));
-            }
-        } catch (Exception e) {
-            System.out.println("Error while fetching max record " + e.getMessage());
-        } finally {
-            DataSource.getInstance().closeConnection(conn);
-        }
-    }
-
-    @Override
-    public void getMinRecordWithCondition(String columnName, String tableName, String condition) throws PropertyVetoException, SQLException, IOException {
-        Connection conn = null;
-        try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("select min(" + columnName +") as min from " + tableName + " " + condition);
-            ResultSet rs = pr.executeQuery();
-            while (rs.next()) {
-                System.out.println("max record is  " + rs.getInt("min"));
-            }
-        } catch (Exception e) {
-            System.out.println("Error while fetching min record " + e.getMessage());
-        } finally {
-            DataSource.getInstance().closeConnection(conn);
-        }
-    }
-
-    @Override
-    public void getSum(String columnName, String tableName) {
-
-    }
-
-    @Override
-    public void getSumWithCondition(String columnName, String tableName, String condition) {
-
+    public Student getStudentWithHighestGrade() {
+        return null;
     }
 }
