@@ -139,4 +139,24 @@ public class FacultyDAOImpl implements FacultyDAO {
         return faculty;
 
     }
+
+    @Override
+    public List<Student> getAllStudentForFaculty() {
+        return null;
+    }
+
+    @Override
+    public List<Faculty> getOrderFaculties() {
+        return null;
+    }
+
+    @Override
+    public Faculty getFacultyWithHighestAverageGrade() {
+        return null;
+    }
+
+    @Override
+    public Faculty getFacultyWithLowerAverageGrade() {
+        return null;
+    }
 }

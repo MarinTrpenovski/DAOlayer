@@ -23,7 +23,7 @@ public class StudentDAOImpl implements StudentDAO{
         List<Student> studentList = null;
         Connection conn = null;
         try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
+            conn = DataSource.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select * from student");
             studentList =  new ArrayList<>();
             ResultSet rs = pr.executeQuery();
@@ -51,7 +51,7 @@ public class StudentDAOImpl implements StudentDAO{
         Student student = null;
         Connection conn = null;
         try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
+            conn = DataSource.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("select * from student as st where st.id = ?");
             pr.setString(1, id.toString());
             ResultSet rs = pr.executeQuery();
@@ -70,7 +70,7 @@ public class StudentDAOImpl implements StudentDAO{
     public void delete(Long id) throws PropertyVetoException, SQLException, IOException {
         Connection conn = null;
         try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
+            conn = DataSource.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("delete from student where student.id = ?");
             pr.setLong(1, id);
             int number = pr.executeUpdate();
@@ -86,7 +86,7 @@ public class StudentDAOImpl implements StudentDAO{
     public void update(Student student) throws PropertyVetoException, SQLException, IOException {
         Connection conn = null;
         try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
+            conn = DataSource.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("update student set name = ? , surname = ? where student.id = ?");
             pr.setString(1, student.getName());
             pr.setString(2, student.getSurname());
@@ -104,7 +104,7 @@ public class StudentDAOImpl implements StudentDAO{
     public void create(Student student) throws PropertyVetoException, SQLException, IOException {
         Connection conn = null;
         try {
-            conn = DefaultConnectionFactory.getInstance().getConnection();
+            conn = DataSource.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("insert into student (name, surname) VALUES ( ?, ?)");
             pr.setString(1, student.getName());
             pr.setString(2, student.getSurname());
@@ -119,12 +119,54 @@ public class StudentDAOImpl implements StudentDAO{
     }
 
     @Override
-    public Integer getAverageGrade() {
+    public Double getAverageGradeForStudent(Long id) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            PreparedStatement pr = conn.prepareStatement("select avg(grade) as averageGrade from student_subject where student_subject.studentId = ?");
+            pr.setLong(1, id);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            Double averageGrade = rs.getDouble("averageGrade");
+            return averageGrade;
+        } catch (SQLException e) {
+            System.out.println("Error while fetching " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
         return null;
     }
 
     @Override
-    public Student getStudentWithHighestGrade() {
+    public Student getStudentWithHighestGrade() throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        try {
+            conn =  DataSource.getInstance().getConnection();
+            final String sql = "select * from student s where s.id = (select SS.studentId from student_subject SS inner join (select id, max(grade) as MaxGrade from student_subject group by grade) groupedSS on SS.id = groupedSS.MaxGrade)";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            Long id = rs.getLong("id");
+            String name =  rs.getString("name");
+            String surname = rs.getString("surname");
+            Student st = new Student(id, name, surname);
+            return st;
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            System.out.println("Error while get student with highest grade " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return null;
+    }
+
+    @Override
+    public Student getStudentWithMostCredits() {
+        
+        return null;
+    }
+
+    @Override
+    public Student getStudentWithLeastCredits() {
         return null;
     }
 }

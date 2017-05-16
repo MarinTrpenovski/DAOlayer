@@ -118,4 +118,24 @@ public class SubjectDAOImpl implements SubjectDAO {
         }
         return subject;
     }
+
+    @Override
+    public Subject getSubjectWithHighestCredits() {
+        return null;
+    }
+
+    @Override
+    public Subject getSubjectWithLowerCredits() {
+        return null;
+    }
+
+    @Override
+    public List<Subject> getSubjectsForSemester(Long semester) {
+        return null;
+    }
+
+    @Override
+    public List<Subject> getNumberOfSubjectWithSpecificCredits(Long numberOfCredits) {
+        return null;
+    }
 }

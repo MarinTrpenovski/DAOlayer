@@ -121,4 +121,14 @@ public class UniversityDAOImpl implements UniversityDAO {
         return university;
 
     }
+
+    @Override
+    public List<Faculty> getFacultiesForUniversity(Long universityId) {
+        return null;
+    }
+
+    @Override
+    public Integer getNumberOfStudentsForUniversity(Long universityId) {
+        return null;
+    }
 }
