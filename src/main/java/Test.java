@@ -1,6 +1,7 @@
 import DB_Pooling.DataSource;
 import DB_Pooling.JdbcConnectionPool;
 import connections.DefaultConnectionFactory;
+import dao.impl.FacultyDAOImpl;
 import dao.impl.StudentDAOImpl;
 import entity.Student;
 
@@ -30,8 +31,8 @@ public class Test {
 
 
     public static void main(String[] args) throws PropertyVetoException, IOException, SQLException {
-        Long id = 2L;
-        StudentDAOImpl st =  new StudentDAOImpl();
-        st.getStudentWithHighestGrade();
+        Long id = 1L;
+        StudentDAOImpl studentDAO =  new StudentDAOImpl();
+        studentDAO.getStudentWithLeastCredits();
     }
 }

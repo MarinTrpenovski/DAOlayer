@@ -141,8 +141,31 @@ public class FacultyDAOImpl implements FacultyDAO {
     }
 
     @Override
-    public List<Student> getAllStudentForFaculty() {
-        return null;
+    public List<Student> getAllStudentForFaculty(Long id) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        List<Student> studentList = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT * FROM exercise.student where facultyId = ?";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            pr.setLong(1, id);
+            ResultSet rs  = pr.executeQuery();
+            studentList =  new ArrayList<>();
+            while (rs.next()) {
+                Long studentId = rs.getLong("id");
+                String name = rs.getString("name");
+                String surname = rs.getString("surname");
+                Student student =  new Student(studentId, name, surname);
+                studentList.add(student);
+            }
+            System.out.println("Number of students per faculty  is " + studentList.size());
+            return studentList;
+        } catch (SQLException | IOException | PropertyVetoException e) {
+            System.out.println("Error while fetching students for faculty " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return studentList;
     }
 
     @Override

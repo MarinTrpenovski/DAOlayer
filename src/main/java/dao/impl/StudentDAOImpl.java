@@ -5,6 +5,7 @@ import connections.DefaultConnectionFactory;
 import dao.StudentDAO;
 import entity.Student;
 
+import javax.xml.crypto.Data;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -160,13 +161,57 @@ public class StudentDAOImpl implements StudentDAO{
     }
 
     @Override
-    public Student getStudentWithMostCredits() {
-        
+    public Student getStudentWithMostCredits() throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "select st.*, sum(credits) as Total from exercise.student st\n" +
+                    "\tjoin student_subject ss on ss.studentId = st.id\n" +
+                    "    join subject su on su.id = ss.subjectId\n" +
+                    "    group by studentId\n" +
+                    "    order by Total DESC\n" +
+                    "    limit 1";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            Long id = rs.getLong("id");
+            String name =  rs.getString("name");
+            String surname = rs.getString("surname");
+            Student st = new Student(id, name, surname);
+            return st;
+        }catch (SQLException | IOException | PropertyVetoException e) {
+            System.out.println("Error while fetching student with max credits " + e.getMessage());
+        }
+        finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
         return null;
     }
 
     @Override
-    public Student getStudentWithLeastCredits() {
+    public Student getStudentWithLeastCredits() throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "select st.*, sum(credits) as Total from exercise.student st\n" +
+                    "\tjoin student_subject ss on ss.studentId = st.id\n" +
+                    "    join subject su on su.id = ss.subjectId\n" +
+                    "    group by studentId\n" +
+                    "    order by Total ASC\n" +
+                    "    limit 1";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            Long id = rs.getLong("id");
+            String name =  rs.getString("name");
+            String surname = rs.getString("surname");
+            Student st = new Student(id, name, surname);
+            return st;
+        } catch (SQLException | IOException | PropertyVetoException e) {
+            System.out.println("Error while fetching student with least credits " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
         return null;
     }
 }

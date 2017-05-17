@@ -16,8 +16,8 @@ public interface StudentDAO extends GenericDAO<Student, Long> {
 
     Student getStudentWithHighestGrade() throws PropertyVetoException, SQLException, IOException;
 
-    Student getStudentWithMostCredits();
+    Student getStudentWithMostCredits() throws PropertyVetoException, SQLException, IOException;
 
-    Student getStudentWithLeastCredits();
+    Student getStudentWithLeastCredits() throws PropertyVetoException, SQLException, IOException;
 
 }

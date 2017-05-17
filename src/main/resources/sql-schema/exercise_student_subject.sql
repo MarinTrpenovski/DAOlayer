@@ -32,7 +32,7 @@ CREATE TABLE `student_subject` (
   KEY `subjectId_idx` (`subjectId`),
   CONSTRAINT `studentId` FOREIGN KEY (`studentId`) REFERENCES `student` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `subjectId` FOREIGN KEY (`subjectId`) REFERENCES `subject` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `student_subject` (
 
 LOCK TABLES `student_subject` WRITE;
 /*!40000 ALTER TABLE `student_subject` DISABLE KEYS */;
-INSERT INTO `student_subject` VALUES (1,7,1,1),(2,6,2,1);
+INSERT INTO `student_subject` VALUES (1,7,1,1),(2,6,2,1),(3,8,1,2),(4,7,1,3),(5,6,2,4),(6,8,2,2),(7,9,2,3);
 /*!40000 ALTER TABLE `student_subject` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-11 16:31:04
+-- Dump completed on 2017-05-17 17:04:34

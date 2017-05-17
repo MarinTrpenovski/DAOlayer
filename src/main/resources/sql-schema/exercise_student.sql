@@ -26,9 +26,12 @@ CREATE TABLE `student` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
   `surname` varchar(250) DEFAULT NULL,
+  `facultyId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `facultyId_idx` (`facultyId`),
+  CONSTRAINT `facultyId` FOREIGN KEY (`facultyId`) REFERENCES `faculty` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +40,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,'Marin','Trpenovski'),(2,'Trajko','Trajkovski'),(3,'Bojan','Pajkovski');
+INSERT INTO `student` VALUES (1,'Marin','Trpenovski',1),(2,'Trajko','Trajkovski',2),(3,'Bojan','Pajkovski',3),(4,'Trajko','Trajkov',1),(5,'Bojan','Todorovski',2),(6,'Martin','Martinovski',1),(7,'Bojan','Korinovski',4),(8,'Marko ','Martinovski',3),(9,'Dejan ','Stojcevski',2);
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-11 16:31:04
+-- Dump completed on 2017-05-17 17:04:35
