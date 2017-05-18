@@ -29,6 +29,12 @@ public class Faculty {
 
     }
 
+    public Faculty (Long id, Long parentId, String name){
+        this.id = id;
+        this.parentId = parentId;
+        this.name = name;
+    }
+
     public Faculty(Long id, Long parentId, Long parentIndex, String numericalMapping, Long depth, String name, String address, Long universityId) {
         this.id = id;
         this.parentId = parentId;

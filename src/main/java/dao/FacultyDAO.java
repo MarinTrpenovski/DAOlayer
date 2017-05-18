@@ -16,9 +16,9 @@ public interface FacultyDAO extends GenericDAO<Faculty, Long> {
 
     List<Student> getAllStudentForFaculty(Long id) throws PropertyVetoException, SQLException, IOException;
 
-    List<Faculty> getOrderFaculties();
+    List<Faculty> getOrderFaculties() throws PropertyVetoException, SQLException, IOException;
 
-    Faculty getFacultyWithHighestAverageGrade();
+    Faculty getFacultyWithHighestAverageGrade() throws PropertyVetoException, SQLException, IOException;
 
-    Faculty getFacultyWithLowerAverageGrade();
+    Faculty getFacultyWithLowerAverageGrade() throws PropertyVetoException, SQLException, IOException;
 }

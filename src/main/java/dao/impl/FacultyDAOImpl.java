@@ -169,17 +169,85 @@ public class FacultyDAOImpl implements FacultyDAO {
     }
 
     @Override
-    public List<Faculty> getOrderFaculties() {
-        return null;
+    public List<Faculty> getOrderFaculties() throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        List<Faculty> facultyList = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT f1.name  as level1, f1.id as id, f1.parentId as parentId, \n" +
+                    "f2.name as level2, f2.id as id, f2.parentId as parentId, \n" +
+                    "f3.name as level3, f3.id as id , f3.parentId as parentId \n" +
+                    "FROM exercise.faculty f1\n" +
+                    "left join faculty f2 on f1.id = f2.parentId\n" +
+                    "left join faculty f3 on f3.parentId = f2.id\n" +
+                    "where f2.name is not null";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            facultyList = new ArrayList<>();
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                Long parentId = rs.getLong("parentId");
+                String name = rs.getString("level1");
+                Faculty faculty  = new Faculty(id, parentId, name);
+                facultyList.add(faculty);
+            }
+            return facultyList;
+        } catch (SQLException | IOException | PropertyVetoException e){
+            System.out.println("Error while fetching ordered faculties " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return facultyList;
     }
 
     @Override
-    public Faculty getFacultyWithHighestAverageGrade() {
-        return null;
+    public Faculty getFacultyWithHighestAverageGrade() throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        Faculty faculty = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT f.* , avg(grade) as AverageGrade FROM exercise.faculty f\n" +
+                    "\tjoin student s on s.facultyId = f.id\n" +
+                    "    join student_subject ss on s.id = ss.studentId\n" +
+                    "    group by facultyId\n" +
+                    "    order by AverageGrade DESC\n" +
+                    "    LIMIT 1;";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            faculty = new Faculty(rs.getLong("id"),rs.getLong("parentId"), rs.getLong("parentIndex"), rs.getString("numericalmapping"), rs.getLong("depth"), rs.getString("name"), rs.getString("address"), rs.getLong("universityId"));
+            return faculty;
+        }catch (SQLException | IOException | PropertyVetoException e){
+            System.out.println("Error while get faculty with highest average grade " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return faculty;
     }
 
     @Override
-    public Faculty getFacultyWithLowerAverageGrade() {
-        return null;
+    public Faculty getFacultyWithLowerAverageGrade() throws PropertyVetoException, SQLException, IOException {
+
+        Connection conn = null;
+        Faculty faculty = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT f.* , avg(grade) as AverageGrade FROM exercise.faculty f\n" +
+                    "\tjoin student s on s.facultyId = f.id\n" +
+                    "    join student_subject ss on s.id = ss.studentId\n" +
+                    "    group by facultyId\n" +
+                    "    order by AverageGrade ASC\n" +
+                    "    LIMIT 1;";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            faculty = new Faculty(rs.getLong("id"),rs.getLong("parentId"), rs.getLong("parentIndex"), rs.getString("numericalmapping"), rs.getLong("depth"), rs.getString("name"), rs.getString("address"), rs.getLong("universityId"));
+            return faculty;
+        }catch (SQLException | IOException | PropertyVetoException e){
+            System.out.println("Error while get faculty with highest average grade " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return faculty;
     }
 }

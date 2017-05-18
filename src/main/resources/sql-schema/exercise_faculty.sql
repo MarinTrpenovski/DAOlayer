@@ -43,7 +43,7 @@ CREATE TABLE `faculty` (
 
 LOCK TABLES `faculty` WRITE;
 /*!40000 ALTER TABLE `faculty` DISABLE KEYS */;
-INSERT INTO `faculty` VALUES (1,NULL,0,NULL,NULL,'Technical','Partizanska',NULL),(2,NULL,0,NULL,NULL,'Art','Teodosij Gologanov',NULL),(3,NULL,0,NULL,NULL,'Medicine','Vodnjanska',NULL),(4,1,1,NULL,NULL,'Elektro','ilindenska',NULL),(5,1,1,NULL,NULL,'Masinski','Ilindenska',NULL),(6,1,1,NULL,NULL,'Prirodno-matematicki','mavrovka',NULL),(7,6,2,NULL,NULL,'Matematicki','Mavrovka',NULL),(8,6,2,NULL,NULL,'hemiski','Mavrovka',NULL),(9,2,1,NULL,NULL,'Muzicka Akademija','Ruzveltova',NULL),(10,2,1,NULL,NULL,'Likovna Akademija','Aminta treti',NULL),(11,3,1,NULL,NULL,'Medicinski Fakultet','Vodnjanska',NULL),(12,3,1,NULL,NULL,'Stomatoloski Fakultet','Vodnjanska',NULL);
+INSERT INTO `faculty` VALUES (1,NULL,0,NULL,NULL,'Technical','Partizanska',1),(2,NULL,0,NULL,NULL,'Art','Teodosij Gologanov',2),(3,NULL,0,NULL,NULL,'Medicine','Vodnjanska',2),(4,1,1,NULL,NULL,'Elektro','ilindenska',1),(5,1,1,NULL,NULL,'Masinski','Ilindenska',1),(6,1,1,NULL,NULL,'Prirodno-matematicki','mavrovka',1),(7,6,2,NULL,NULL,'Matematicki','Mavrovka',1),(8,6,2,NULL,NULL,'hemiski','Mavrovka',1),(9,2,1,NULL,NULL,'Muzicka Akademija','Ruzveltova',3),(10,2,1,NULL,NULL,'Likovna Akademija','Aminta treti',3),(11,3,1,NULL,NULL,'Medicinski Fakultet','Vodnjanska',2),(12,3,1,NULL,NULL,'Stomatoloski Fakultet','Vodnjanska',2);
 /*!40000 ALTER TABLE `faculty` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-17 17:04:35
+-- Dump completed on 2017-05-18 16:32:06

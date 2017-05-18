@@ -7,6 +7,7 @@ import dao.generic.GenericDAO;
 import entity.Student;
 import entity.Subject;
 
+import javax.xml.crypto.Data;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.Connection;
@@ -120,22 +121,131 @@ public class SubjectDAOImpl implements SubjectDAO {
     }
 
     @Override
-    public Subject getSubjectWithHighestCredits() {
+    public Subject getSubjectWithHighestCredits() throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        Subject subject = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT * , max(credits) as MaxCredits FROM exercise.subject s\n" +
+                    "group by id\n" +
+                    "order by MaxCredits DESC\n" +
+                    "limit 1;";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            Long id = rs.getLong("id");
+            Long semester = rs.getLong("semester");
+            String name = rs.getString("name");
+            Long credits = rs.getLong("credits");
+            subject = new Subject(id, name, semester, credits);
+            return subject;
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            System.out.println("Error while getting subject with highest credits " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return subject;
+    }
+
+    @Override
+    public Subject getSubjectWithLowerCredits() throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        Subject subject = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT * , min(credits) as MaxCredits FROM exercise.subject s\n" +
+                    "group by id\n" +
+                    "order by MaxCredits ASC\n" +
+                    "limit 1;";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            Long id = rs.getLong("id");
+            Long semester = rs.getLong("semester");
+            String name = rs.getString("name");
+            Long credits = rs.getLong("credits");
+            subject = new Subject(id, name, semester, credits);
+            return subject;
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            System.out.println("Error while getting subject with highest credits " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return subject;
+    }
+
+    @Override
+    public List<Subject> getSubjectsForSemesterForFaculty(Long semester, Long facultyId) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        List<Subject> subjectList = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT s.* FROM exercise.subject s\n" +
+                    "inner join student_subject ss on ss.subjectId = s.id\n" +
+                    "inner join student st on st.id = ss.studentId\n" +
+                    "inner join faculty f on f.id = st.facultyId\n" +
+                    "where f.id = ?  and s.semester = ?;";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            pr.setLong(1, facultyId);
+            pr.setLong(2, semester);
+            ResultSet rs = pr.executeQuery();
+            subjectList = new ArrayList<>();
+            while (rs.next()) {
+                Subject subject = new Subject(rs.getLong("id"), rs.getString("name"), rs.getLong("credits"), rs.getLong("semester"));
+                subjectList.add(subject);
+            }
+            return subjectList;
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            System.out.println("Error while fetching subject for faculty for semester" + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return subjectList;
+    }
+
+    @Override
+    public Long getNumberOfSubjectWithSpecificCredits(Long numberOfCredits) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT count(id) as total FROM exercise.subject s\n" +
+                    "where s.credits = ?";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            pr.setLong(1, numberOfCredits);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            Long totalNumberOfSubject = rs.getLong("total");
+            System.out.println("Total number of subject with " + numberOfCredits + " is " + totalNumberOfSubject);
+        } catch (SQLException | IOException | PropertyVetoException e) {
+            System.out.println("error while getting number of subject are " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
         return null;
     }
 
     @Override
-    public Subject getSubjectWithLowerCredits() {
-        return null;
-    }
-
-    @Override
-    public List<Subject> getSubjectsForSemester(Long semester) {
-        return null;
-    }
-
-    @Override
-    public List<Subject> getNumberOfSubjectWithSpecificCredits(Long numberOfCredits) {
+    public Long totalCreditsPerSemesterPerFaculty(Long semesterId, Long facultyId) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT sum(credits) as TotalCredits from exercise.subject su\n" +
+                    "inner join student_subject ss on ss.subjectId = su.id\n" +
+                    "inner join student st on st.id = ss.studentId\n" +
+                    "inner join faculty f on f.id = st.facultyId\n" +
+                    "where f.id = ? and su.semester = ?";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            pr.setLong(1, facultyId);
+            pr.setLong(2, semesterId);
+            ResultSet rs = pr.executeQuery();
+            Long totalCreditsPerSemester = rs.getLong("TotalCredits");
+            System.out.println("Number of credits are " +  totalCreditsPerSemester);
+            return totalCreditsPerSemester;
+        } catch (SQLException | IOException | PropertyVetoException e) {
+            System.out.println("Error while fetching all credits per semester per faculty" + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
         return null;
     }
 }

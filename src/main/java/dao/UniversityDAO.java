@@ -4,6 +4,9 @@ import dao.generic.GenericDAO;
 import entity.Faculty;
 import entity.University;
 
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -11,7 +14,7 @@ import java.util.List;
  */
 public interface UniversityDAO extends GenericDAO<University, Long> {
 
-    List<Faculty> getFacultiesForUniversity(Long universityId);
+    List<Faculty> getFacultiesForUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException;
 
-    Integer getNumberOfStudentsForUniversity(Long universityId);
+    Integer getNumberOfStudentsForUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException;
 }

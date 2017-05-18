@@ -123,12 +123,58 @@ public class UniversityDAOImpl implements UniversityDAO {
     }
 
     @Override
-    public List<Faculty> getFacultiesForUniversity(Long universityId) {
-        return null;
+    public List<Faculty> getFacultiesForUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        List<Faculty> facultyList = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT * FROM exercise.faculty where universityId = ?";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            pr.setLong(1, universityId);
+            ResultSet rs = pr.executeQuery();
+            facultyList = new ArrayList<Faculty>();
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                Long parentId = rs.getLong("parentId");
+                Long parentIndex = rs.getLong("parentIndex");
+                String numericalMapping = rs.getString("numericalmapping");
+                Long depth = rs.getLong("depth");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                Long universityIdReturned = rs.getLong("universityId");
+                Faculty faculty =  new Faculty(id, parentId, parentIndex, numericalMapping, depth,name, address, universityIdReturned);
+                facultyList.add(faculty);
+            }
+            return facultyList;
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            System.out.println("Error while fetching faculties per university " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return facultyList;
     }
 
     @Override
-    public Integer getNumberOfStudentsForUniversity(Long universityId) {
+    public Integer getNumberOfStudentsForUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT count(st.id) as numberOfStudents FROM exercise.student st\n" +
+                    "inner join faculty f on f.id = st.facultyId\n" +
+                    "inner join university u on u.id = f.universityId\n" +
+                    "where universityId = 1";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            pr.setLong(1, universityId);
+            ResultSet rs = pr.executeQuery();
+            rs.next();
+            Integer numberOfStudentsAre = rs.getInt("numberOfStudents");
+            System.out.println("Number of students are " + numberOfStudentsAre);
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            System.out.println("Error while getting number of students per university" + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+
         return null;
     }
 }

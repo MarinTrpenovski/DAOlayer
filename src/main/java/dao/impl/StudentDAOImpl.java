@@ -34,7 +34,6 @@ public class StudentDAOImpl implements StudentDAO{
                 String surname = rs.getString("surname");
                 Student student =  new Student(id, name, surname);
                 studentList.add(student);
-
             }
             conn.close();
             return studentList;
@@ -213,5 +212,64 @@ public class StudentDAOImpl implements StudentDAO{
             DataSource.getInstance().closeConnection(conn);
         }
         return null;
+    }
+
+    @Override
+    public List<Student> getAllStudentPerFaculty(Long facultyId) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        List<Student> studentList = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT st.* FROM exercise.student st\n" +
+                    "inner join faculty f on f.id = st.facultyId\n" +
+                    "where f.id = ?";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            pr.setLong(1, facultyId);
+            ResultSet rs = pr.executeQuery();
+            studentList = new ArrayList<>();
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String name = rs.getString("name");
+                String surname = rs.getString("surname");
+                Student student =  new Student(id, name, surname);
+                studentList.add(student);
+            }
+            return  studentList;
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            System.out.println("Error while fetching students per faculty " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return studentList;
+    }
+
+    @Override
+    public List<Student> getAllStudentPerUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException {
+        Connection conn = null;
+        List<Student> studentList = null;
+        try {
+            conn = DataSource.getInstance().getConnection();
+            String sql = "SELECT st.* FROM exercise.student st\n" +
+                    "inner join faculty f on f.id = st.facultyId\n" +
+                    "inner join university u on u.id = f.universityId\n" +
+                    "where u.id = ?";
+            PreparedStatement pr = conn.prepareStatement(sql);
+            pr.setLong(1, universityId);
+            ResultSet rs = pr.executeQuery();
+            studentList = new ArrayList<>();
+            while (rs.next()) {
+                Long id = rs.getLong("id");
+                String name = rs.getString("name");
+                String surname = rs.getString("surname");
+                Student student =  new Student(id, name, surname);
+                studentList.add(student);
+            }
+            return  studentList;
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            System.out.println("Error while fetching students per faculty " + e.getMessage());
+        } finally {
+            DataSource.getInstance().closeConnection(conn);
+        }
+        return studentList;
     }
 }

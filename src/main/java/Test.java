@@ -32,7 +32,7 @@ public class Test {
 
     public static void main(String[] args) throws PropertyVetoException, IOException, SQLException {
         Long id = 1L;
-        StudentDAOImpl studentDAO =  new StudentDAOImpl();
-        studentDAO.getStudentWithLeastCredits();
+        FacultyDAOImpl studentDAO =  new FacultyDAOImpl();
+        studentDAO.getOrderFaculties();
     }
 }
