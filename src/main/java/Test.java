@@ -1,9 +1,5 @@
-import dao.impl.FacultyDAOImpl;
-import exception.MySqlException;
+import exception.MyException;
 
-import java.beans.PropertyVetoException;
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Created by marin.trpenovski on 4/19/2017.
@@ -17,12 +13,17 @@ public class Test {
             System.out.println("Number of idle are " + ds.getNumIdle());
         }
 
-    }*/
+    }
+*/
+
+    public static void main(String[] args) throws  MyException {
+        try {
+            throw new MyException("databaseConnectionError");
+        } catch (Exception e) {
+            System.out.println("Exception is" + e.getMessage());
+        }
 
 
-    public static void main(String[] args) throws PropertyVetoException, IOException, SQLException, MySqlException {
-        FacultyDAOImpl dao = new FacultyDAOImpl();
-        dao.getAll();
         /*try {
             throw new SQLException();
         } catch (Exception e) {

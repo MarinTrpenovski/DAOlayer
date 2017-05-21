@@ -1,6 +1,7 @@
 package connections;
 
 import constant.DBConstants;
+import exception.MyException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,9 +22,14 @@ public class DefaultConnectionFactory {
         }
     }
 
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection() throws MyException {
         Connection conn = null;
-        conn = DriverManager.getConnection(DBConstants.URL, DBConstants.USERNAME, DBConstants.PASSWORD);
+        try {
+            conn = DriverManager.getConnection(DBConstants.URL, DBConstants.USERNAME, DBConstants.PASSWORD);
+        } catch (SQLException e) {
+            throw new MyException("databaseConnectionError");
+        }
+
         return conn;
     }
 

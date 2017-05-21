@@ -1,6 +1,7 @@
 package databaseOperation;
 
 import DBCP_DB_Pooling.DataSource;
+import exception.MyException;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -32,14 +33,15 @@ public class RunnableCRUDOperation implements Runnable{
             pr.setString(2, "Location " + this.name);
             int number = pr.executeUpdate();
             System.out.println("NNumber is " + number);
-        } catch (SQLException | IOException | PropertyVetoException e) {
-            System.out.println("SQL Exception " + e.getMessage());
+        } catch (SQLException | MyException e) {
+
         } finally {
             try {
                 DataSource.getInstance().closeConnection(conn);
-            } catch (IOException | PropertyVetoException | SQLException e) {
-                e.printStackTrace();
+            } catch (MyException e) {
+                System.out.println("SQL Exception " + e.getMessage());
             }
+
         }
     }
 

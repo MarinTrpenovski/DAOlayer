@@ -7,6 +7,7 @@ import dao.generic.GenericDAO;
 import entity.Faculty;
 import entity.Subject;
 import entity.University;
+import exception.MyException;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -20,7 +21,7 @@ import java.util.List;
 public class UniversityDAOImpl implements UniversityDAO {
 
     @Override
-    public List<University> getAll() throws PropertyVetoException, SQLException, IOException {
+    public List<University> getAll() throws MyException {
         List<University> universities = null;
         Connection conn = null;
         try {
@@ -38,15 +39,14 @@ public class UniversityDAOImpl implements UniversityDAO {
             }
             return universities;
         } catch (Exception ex){
-            System.out.println("Excetion while fetching all universities " + ex.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return universities;
     }
 
     @Override
-    public void delete(Long id) throws PropertyVetoException, SQLException, IOException {
+    public void delete(Long id) throws MyException {
         Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
@@ -56,14 +56,14 @@ public class UniversityDAOImpl implements UniversityDAO {
             conn.close();
 
         } catch(Exception e){
-            System.out.println("Error while deleting university " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void update(University university) throws PropertyVetoException, SQLException, IOException {
+    public void update(University university) throws MyException {
         Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
@@ -75,14 +75,14 @@ public class UniversityDAOImpl implements UniversityDAO {
             conn.close();
 
         } catch(Exception e){
-            System.out.println("Error while updating university" + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void create(University university) throws PropertyVetoException, SQLException, IOException {
+    public void create(University university) throws MyException {
         Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
@@ -93,14 +93,14 @@ public class UniversityDAOImpl implements UniversityDAO {
             conn.close();
 
         } catch(Exception e){
-            System.out.println("Error while creating university " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public University getOne(Long id) throws PropertyVetoException, SQLException, IOException {
+    public University getOne(Long id) throws MyException {
 
         University university = null;
         Connection conn = null;
@@ -114,16 +114,14 @@ public class UniversityDAOImpl implements UniversityDAO {
             conn.close();
             return university;
         } catch(Exception e){
-            System.out.println("Error while fetching university " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return university;
-
     }
 
     @Override
-    public List<Faculty> getFacultiesForUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException {
+    public List<Faculty> getFacultiesForUniversity(Long universityId) throws MyException {
         Connection conn = null;
         List<Faculty> facultyList = null;
         try {
@@ -146,16 +144,15 @@ public class UniversityDAOImpl implements UniversityDAO {
                 facultyList.add(faculty);
             }
             return facultyList;
-        } catch (SQLException | PropertyVetoException | IOException e) {
-            System.out.println("Error while fetching faculties per university " + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return facultyList;
     }
 
     @Override
-    public Integer getNumberOfStudentsForUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException {
+    public Integer getNumberOfStudentsForUniversity(Long universityId) throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -169,12 +166,11 @@ public class UniversityDAOImpl implements UniversityDAO {
             rs.next();
             Integer numberOfStudentsAre = rs.getInt("numberOfStudents");
             System.out.println("Number of students are " + numberOfStudentsAre);
-        } catch (SQLException | PropertyVetoException | IOException e) {
-            System.out.println("Error while getting number of students per university" + e.getMessage());
+            return numberOfStudentsAre;
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-
-        return null;
     }
 }

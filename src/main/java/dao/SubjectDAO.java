@@ -2,6 +2,7 @@ package dao;
 
 import dao.generic.GenericDAO;
 import entity.Subject;
+import exception.MyException;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -13,13 +14,13 @@ import java.util.List;
  */
 public interface SubjectDAO extends GenericDAO<Subject, Long>{
 
-    Subject getSubjectWithHighestCredits() throws PropertyVetoException, SQLException, IOException;
+    Subject getSubjectWithHighestCredits() throws MyException;
 
-    Subject getSubjectWithLowerCredits() throws PropertyVetoException, SQLException, IOException;
+    Subject getSubjectWithLowerCredits() throws MyException;
 
-    List<Subject> getSubjectsForSemesterForFaculty(Long semester, Long facultyId) throws PropertyVetoException, SQLException, IOException;
+    List<Subject> getSubjectsForSemesterForFaculty(Long semester, Long facultyId) throws MyException;
 
-    Long getNumberOfSubjectWithSpecificCredits(Long numberOfCredits) throws PropertyVetoException, SQLException, IOException;
+    Long getNumberOfSubjectWithSpecificCredits(Long numberOfCredits) throws MyException;
 
-    Long totalCreditsPerSemesterPerFaculty(Long semesterId, Long facultyId) throws PropertyVetoException, SQLException, IOException;
+    Long totalCreditsPerSemesterPerFaculty(Long semesterId, Long facultyId) throws MyException;
 }

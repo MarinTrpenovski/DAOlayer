@@ -2,6 +2,7 @@ package dao;
 
 import dao.generic.GenericDAO;
 import entity.Student;
+import exception.MyException;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -13,16 +14,16 @@ import java.util.List;
  */
 public interface StudentDAO extends GenericDAO<Student, Long> {
 
-    Double getAverageGradeForStudent(Long id) throws PropertyVetoException, SQLException, IOException;
+    Double getAverageGradeForStudent(Long id) throws MyException;
 
-    Student getStudentWithHighestGrade() throws PropertyVetoException, SQLException, IOException;
+    Student getStudentWithHighestGrade() throws MyException;
 
-    Student getStudentWithMostCredits() throws PropertyVetoException, SQLException, IOException;
+    Student getStudentWithMostCredits() throws MyException;
 
-    Student getStudentWithLeastCredits() throws PropertyVetoException, SQLException, IOException;
+    Student getStudentWithLeastCredits() throws MyException;
 
-    List<Student> getAllStudentPerFaculty(Long facultyId) throws PropertyVetoException, SQLException, IOException;
+    List<Student> getAllStudentPerFaculty(Long facultyId) throws MyException;
 
-    List<Student> getAllStudentPerUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException;
+    List<Student> getAllStudentPerUniversity(Long universityId) throws MyException;
 
 }

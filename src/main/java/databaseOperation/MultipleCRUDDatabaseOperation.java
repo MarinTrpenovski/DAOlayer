@@ -1,6 +1,7 @@
 package databaseOperation;
 
 import DBCP_DB_Pooling.DataSource;
+import exception.MyException;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
  */
 public class MultipleCRUDDatabaseOperation {
 
-    public static void main(String[] args) throws PropertyVetoException, SQLException, IOException {
+    public static void main(String[] args) throws MyException {
 
         for(int i = 0; i < 5; i ++) {
             Connection conn = null;
@@ -25,8 +26,8 @@ public class MultipleCRUDDatabaseOperation {
                 pr.setString(2, "Location " + i);
                 int number = pr.executeUpdate();
                 System.out.println("NNumber is " + number);
-            } catch (SQLException | IOException | PropertyVetoException e) {
-                System.out.println("SQL Exception " + e.getMessage());
+            } catch (Exception e) {
+                throw new MyException("");
             } finally {
                 DataSource.getInstance().closeConnection(conn);
             }

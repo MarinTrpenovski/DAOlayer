@@ -6,6 +6,7 @@ import dao.SubjectDAO;
 import dao.generic.GenericDAO;
 import entity.Student;
 import entity.Subject;
+import exception.MyException;
 
 import javax.xml.crypto.Data;
 import java.beans.PropertyVetoException;
@@ -23,7 +24,7 @@ import java.util.List;
 public class SubjectDAOImpl implements SubjectDAO {
 
     @Override
-    public List<Subject> getAll() throws PropertyVetoException, SQLException, IOException {
+    public List<Subject> getAll() throws MyException {
 
         List<Subject> subjects = null;
         Connection conn = null;
@@ -42,16 +43,14 @@ public class SubjectDAOImpl implements SubjectDAO {
             }
             return subjects;
         } catch (Exception ex){
-            System.out.println("Exception while fetching all subjects " + ex.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return subjects;
-
     }
 
     @Override
-    public void delete(Long id) throws PropertyVetoException, SQLException, IOException {
+    public void delete(Long id) throws MyException {
         Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
@@ -59,14 +58,14 @@ public class SubjectDAOImpl implements SubjectDAO {
             pr.setLong(1, id);
             int number = pr.executeUpdate();
         } catch(Exception e){
-            System.out.println("Error while deleting subject " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void update(Subject subject) throws PropertyVetoException, SQLException, IOException {
+    public void update(Subject subject) throws MyException {
         Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
@@ -77,14 +76,14 @@ public class SubjectDAOImpl implements SubjectDAO {
             pr.setLong(4, subject.getId());
             int number = pr.executeUpdate();
         } catch(Exception e){
-            System.out.println("Error while updating subject" + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public void create(Subject subject) throws PropertyVetoException, SQLException, IOException {
+    public void create(Subject subject) throws MyException {
         Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
@@ -94,14 +93,14 @@ public class SubjectDAOImpl implements SubjectDAO {
             pr.setLong(3, subject.getSemester());
             int number = pr.executeUpdate();
         } catch(Exception e){
-            System.out.println("Error while creating subject " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public Subject getOne(Long id) throws PropertyVetoException, SQLException, IOException {
+    public Subject getOne(Long id) throws MyException {
 
         Subject subject = null;
         Connection conn = null;
@@ -113,7 +112,7 @@ public class SubjectDAOImpl implements SubjectDAO {
             rs.next();
             subject = new Subject(rs.getLong("id"), rs.getString("name"), rs.getLong("credits"), rs.getLong("semester"));
         } catch(Exception e){
-            System.out.println("Error while fetching subject " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
@@ -121,7 +120,7 @@ public class SubjectDAOImpl implements SubjectDAO {
     }
 
     @Override
-    public Subject getSubjectWithHighestCredits() throws PropertyVetoException, SQLException, IOException {
+    public Subject getSubjectWithHighestCredits() throws MyException {
         Connection conn = null;
         Subject subject = null;
         try {
@@ -139,16 +138,15 @@ public class SubjectDAOImpl implements SubjectDAO {
             Long credits = rs.getLong("credits");
             subject = new Subject(id, name, semester, credits);
             return subject;
-        } catch (SQLException | PropertyVetoException | IOException e) {
-            System.out.println("Error while getting subject with highest credits " + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return subject;
     }
 
     @Override
-    public Subject getSubjectWithLowerCredits() throws PropertyVetoException, SQLException, IOException {
+    public Subject getSubjectWithLowerCredits() throws MyException{
         Connection conn = null;
         Subject subject = null;
         try {
@@ -166,16 +164,15 @@ public class SubjectDAOImpl implements SubjectDAO {
             Long credits = rs.getLong("credits");
             subject = new Subject(id, name, semester, credits);
             return subject;
-        } catch (SQLException | PropertyVetoException | IOException e) {
-            System.out.println("Error while getting subject with highest credits " + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return subject;
     }
 
     @Override
-    public List<Subject> getSubjectsForSemesterForFaculty(Long semester, Long facultyId) throws PropertyVetoException, SQLException, IOException {
+    public List<Subject> getSubjectsForSemesterForFaculty(Long semester, Long facultyId) throws MyException {
         Connection conn = null;
         List<Subject> subjectList = null;
         try {
@@ -195,16 +192,15 @@ public class SubjectDAOImpl implements SubjectDAO {
                 subjectList.add(subject);
             }
             return subjectList;
-        } catch (SQLException | PropertyVetoException | IOException e) {
-            System.out.println("Error while fetching subject for faculty for semester" + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return subjectList;
     }
 
     @Override
-    public Long getNumberOfSubjectWithSpecificCredits(Long numberOfCredits) throws PropertyVetoException, SQLException, IOException {
+    public Long getNumberOfSubjectWithSpecificCredits(Long numberOfCredits) throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -216,16 +212,16 @@ public class SubjectDAOImpl implements SubjectDAO {
             rs.next();
             Long totalNumberOfSubject = rs.getLong("total");
             System.out.println("Total number of subject with " + numberOfCredits + " is " + totalNumberOfSubject);
-        } catch (SQLException | IOException | PropertyVetoException e) {
-            System.out.println("error while getting number of subject are " + e.getMessage());
+            return totalNumberOfSubject;
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return null;
     }
 
     @Override
-    public Long totalCreditsPerSemesterPerFaculty(Long semesterId, Long facultyId) throws PropertyVetoException, SQLException, IOException {
+    public Long totalCreditsPerSemesterPerFaculty(Long semesterId, Long facultyId) throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -241,11 +237,10 @@ public class SubjectDAOImpl implements SubjectDAO {
             Long totalCreditsPerSemester = rs.getLong("TotalCredits");
             System.out.println("Number of credits are " +  totalCreditsPerSemester);
             return totalCreditsPerSemester;
-        } catch (SQLException | IOException | PropertyVetoException e) {
-            System.out.println("Error while fetching all credits per semester per faculty" + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return null;
     }
 }

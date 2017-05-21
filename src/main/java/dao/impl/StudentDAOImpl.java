@@ -1,9 +1,11 @@
 package dao.impl;
 
 import DBCP_DB_Pooling.DataSource;
+import com.mysql.cj.jdbc.exceptions.MySQLQueryInterruptedException;
 import connections.DefaultConnectionFactory;
 import dao.StudentDAO;
 import entity.Student;
+import exception.MyException;
 
 import javax.xml.crypto.Data;
 import java.beans.PropertyVetoException;
@@ -20,7 +22,7 @@ import java.util.List;
  */
 public class StudentDAOImpl implements StudentDAO{
 
-    public List<Student> getAll() throws PropertyVetoException, SQLException, IOException {
+    public List<Student> getAll() throws MyException {
         List<Student> studentList = null;
         Connection conn = null;
         try {
@@ -46,7 +48,7 @@ public class StudentDAOImpl implements StudentDAO{
 
     }
 
-    public Student getOne(Long id) throws PropertyVetoException, SQLException, IOException {
+    public Student getOne(Long id) throws MyException {
 
         Student student = null;
         Connection conn = null;
@@ -67,7 +69,7 @@ public class StudentDAOImpl implements StudentDAO{
         return student;
     }
 
-    public void delete(Long id) throws PropertyVetoException, SQLException, IOException {
+    public void delete(Long id) throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -77,13 +79,13 @@ public class StudentDAOImpl implements StudentDAO{
             conn.close();
 
         } catch(Exception e){
-            System.out.println("Error while deleting student " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
-    public void update(Student student) throws PropertyVetoException, SQLException, IOException {
+    public void update(Student student) throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -95,13 +97,13 @@ public class StudentDAOImpl implements StudentDAO{
             conn.close();
 
         } catch(Exception e){
-            System.out.println("Error while updating student " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
-    public void create(Student student) throws PropertyVetoException, SQLException, IOException {
+    public void create(Student student) throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -112,14 +114,14 @@ public class StudentDAOImpl implements StudentDAO{
             conn.close();
 
         } catch(Exception e){
-            System.out.println("Error while creating student " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
     }
 
     @Override
-    public Double getAverageGradeForStudent(Long id) throws PropertyVetoException, SQLException, IOException {
+    public Double getAverageGradeForStudent(Long id) throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -130,15 +132,14 @@ public class StudentDAOImpl implements StudentDAO{
             Double averageGrade = rs.getDouble("averageGrade");
             return averageGrade;
         } catch (SQLException e) {
-            System.out.println("Error while fetching " + e.getMessage());
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return null;
     }
 
     @Override
-    public Student getStudentWithHighestGrade() throws PropertyVetoException, SQLException, IOException {
+    public Student getStudentWithHighestGrade() throws MyException {
         Connection conn = null;
         try {
             conn =  DataSource.getInstance().getConnection();
@@ -151,16 +152,15 @@ public class StudentDAOImpl implements StudentDAO{
             String surname = rs.getString("surname");
             Student st = new Student(id, name, surname);
             return st;
-        } catch (SQLException | PropertyVetoException | IOException e) {
-            System.out.println("Error while get student with highest grade " + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return null;
     }
 
     @Override
-    public Student getStudentWithMostCredits() throws PropertyVetoException, SQLException, IOException {
+    public Student getStudentWithMostCredits() throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -178,17 +178,16 @@ public class StudentDAOImpl implements StudentDAO{
             String surname = rs.getString("surname");
             Student st = new Student(id, name, surname);
             return st;
-        }catch (SQLException | IOException | PropertyVetoException e) {
-            System.out.println("Error while fetching student with max credits " + e.getMessage());
+        }catch (Exception e) {
+            throw new MyException("");
         }
         finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return null;
     }
 
     @Override
-    public Student getStudentWithLeastCredits() throws PropertyVetoException, SQLException, IOException {
+    public Student getStudentWithLeastCredits() throws MyException {
         Connection conn = null;
         try {
             conn = DataSource.getInstance().getConnection();
@@ -206,16 +205,15 @@ public class StudentDAOImpl implements StudentDAO{
             String surname = rs.getString("surname");
             Student st = new Student(id, name, surname);
             return st;
-        } catch (SQLException | IOException | PropertyVetoException e) {
-            System.out.println("Error while fetching student with least credits " + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return null;
     }
 
     @Override
-    public List<Student> getAllStudentPerFaculty(Long facultyId) throws PropertyVetoException, SQLException, IOException {
+    public List<Student> getAllStudentPerFaculty(Long facultyId) throws MyException {
         Connection conn = null;
         List<Student> studentList = null;
         try {
@@ -235,16 +233,15 @@ public class StudentDAOImpl implements StudentDAO{
                 studentList.add(student);
             }
             return  studentList;
-        } catch (SQLException | PropertyVetoException | IOException e) {
-            System.out.println("Error while fetching students per faculty " + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return studentList;
     }
 
     @Override
-    public List<Student> getAllStudentPerUniversity(Long universityId) throws PropertyVetoException, SQLException, IOException {
+    public List<Student> getAllStudentPerUniversity(Long universityId) throws MyException {
         Connection conn = null;
         List<Student> studentList = null;
         try {
@@ -265,11 +262,10 @@ public class StudentDAOImpl implements StudentDAO{
                 studentList.add(student);
             }
             return  studentList;
-        } catch (SQLException | PropertyVetoException | IOException e) {
-            System.out.println("Error while fetching students per faculty " + e.getMessage());
+        } catch (Exception e) {
+            throw new MyException("");
         } finally {
             DataSource.getInstance().closeConnection(conn);
         }
-        return studentList;
     }
 }

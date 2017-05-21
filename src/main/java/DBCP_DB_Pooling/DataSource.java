@@ -1,6 +1,7 @@
 package DBCP_DB_Pooling;
 
 import constant.DBConstants;
+import exception.MyException;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import java.beans.PropertyVetoException;
@@ -30,20 +31,31 @@ public class DataSource {
         ds.setMaxOpenPreparedStatements(180);
     }
 
-    public static DataSource getInstance() throws IOException, SQLException, PropertyVetoException {
-        if (dataSource == null) {
-            dataSource = new DataSource();
-            return dataSource;
-        } else {
-            return dataSource;
+    public static DataSource getInstance() throws MyException {
+
+        try {
+            if (dataSource == null) {
+                dataSource = new DataSource();
+                return dataSource;
+            } else {
+                return dataSource;
+            }
+        } catch (SQLException | PropertyVetoException | IOException e) {
+            throw new MyException("databaseConnectionError");
         }
+
     }
 
-    public synchronized Connection getConnection() throws SQLException{
-        return this.ds.getConnection();
+    public synchronized Connection getConnection() throws MyException{
+        try {
+            return this.ds.getConnection();
+        } catch (SQLException e) {
+            throw new MyException("databaseConnectionError");
+        }
+
     }
 
-    public synchronized void closeConnection(Connection conn){
+    public synchronized void closeConnection(Connection conn) throws MyException{
 
         if (conn != null) {
             try {

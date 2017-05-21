@@ -3,6 +3,7 @@ package dao;
 import dao.generic.GenericDAO;
 import entity.Faculty;
 import entity.Student;
+import exception.MyException;
 
 import java.beans.PropertyVetoException;
 import java.io.IOException;
@@ -14,11 +15,11 @@ import java.util.List;
  */
 public interface FacultyDAO extends GenericDAO<Faculty, Long> {
 
-    List<Student> getAllStudentForFaculty(Long id) throws PropertyVetoException, SQLException, IOException;
+    List<Student> getAllStudentForFaculty(Long id) throws MyException;
 
-    List<Faculty> getOrderFaculties() throws PropertyVetoException, SQLException, IOException;
+    List<Faculty> getOrderFaculties() throws MyException;
 
-    Faculty getFacultyWithHighestAverageGrade() throws PropertyVetoException, SQLException, IOException;
+    Faculty getFacultyWithHighestAverageGrade() throws MyException;
 
-    Faculty getFacultyWithLowerAverageGrade() throws PropertyVetoException, SQLException, IOException;
+    Faculty getFacultyWithLowerAverageGrade() throws MyException;
 }
