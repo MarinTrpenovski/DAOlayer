@@ -19,7 +19,6 @@ public class MyException extends Exception {
         super(exceptionName);
         this.resourceBundle = ResourceBundle.getBundle("SqlException", LocaleEnum.getLocale(LocaleEnum.ENGLISH));
         this.exceptionName = this.resourceBundle.getString(exceptionName);
-        System.out.println("Error is :" + this.getExceptionName());
     }
 
     public String getExceptionName() {

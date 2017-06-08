@@ -18,6 +18,11 @@ public class University {
     public University() {
     }
 
+    public University(String name, String location){
+        this.name = name;
+        this.location = location;
+    }
+
     public University(Long id, String name, String location) {
         this.id = id;
         this.name = name;

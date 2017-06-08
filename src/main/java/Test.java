@@ -1,4 +1,12 @@
+import dao.impl.UniversityDAOImpl;
+import databaseOperation.CallableInsertOperation;
+import entity.University;
 import exception.MyException;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 
 /**
@@ -6,30 +14,14 @@ import exception.MyException;
  */
 public class Test {
 
-    /*public static void main(String[] args) throws SQLException, ClassNotFoundException, IOException, PropertyVetoException {
-        DBCP_DB_Pooling.DataSource ds = DBCP_DB_Pooling.DataSource.getInstance();
-        for (int i = 0; i < 7; i ++) {
-            DBCP_DB_Pooling.DataSource.getInstance().getConnection();
-            System.out.println("Number of idle are " + ds.getNumIdle());
-        }
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        Callable<Long> task = new CallableInsertOperation("TestInsert");
+        Future<Long> future = executor.submit(task);
+        System.out.println("Future is done ? " + future.isDone());
+        Long result = future.get();
 
-    }
-*/
-
-    public static void main(String[] args) throws  MyException {
-        try {
-            throw new MyException("databaseConnectionError");
-        } catch (Exception e) {
-            System.out.println("Exception is" + e.getMessage());
-        }
-
-
-        /*try {
-            throw new SQLException();
-        } catch (Exception e) {
-            throw new MySqlException("insertException");
-            //System.out.println("Exception value is " + e.getMessage());
-        }*/
-
+        System.out.println("Future is done ? " + future.isDone());
+        System.out.println("result : " + result);
     }
 }

@@ -67,11 +67,11 @@ public class UniversityDAOImpl implements UniversityDAO {
         Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("update university set name = ?, location = ?, where university.id = ?");
+            PreparedStatement pr  = conn.prepareStatement("update university set name = ?, location = ? where university.id = ?");
             pr.setString(1, university.getName());
             pr.setString(2, university.getLocation());
             pr.setLong(3, university.getId());
-            int number = pr.executeUpdate();
+            pr.execute();
             conn.close();
 
         } catch(Exception e){
@@ -86,10 +86,15 @@ public class UniversityDAOImpl implements UniversityDAO {
         Connection conn = null;
         try {
             conn = DefaultConnectionFactory.getInstance().getConnection();
-            PreparedStatement pr  = conn.prepareStatement("insert into university (name, location) VALUES ( ?, ?)");
+            PreparedStatement pr  = conn.prepareStatement("insert into university (name, location) VALUES ( ?, ?)", Statement.RETURN_GENERATED_KEYS);
             pr.setString(1, university.getName());
             pr.setString(2, university.getLocation());
             int number = pr.executeUpdate();
+            ResultSet rs = pr.getGeneratedKeys();
+            if(rs.next()){
+                System.out.println("Key is " + rs.getLong(1));
+            }
+
             conn.close();
 
         } catch(Exception e){

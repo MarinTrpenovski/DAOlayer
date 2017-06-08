@@ -12,14 +12,13 @@ import java.sql.SQLException;
 /**
  * Created by marin.trpenovski on 5/19/2017.
  */
-public class RunnableCRUDOperation implements Runnable{
+public class RunnableInsertOperation implements Runnable{
 
     private String name;
     private Thread t;
 
-    public RunnableCRUDOperation (String name) {
+    public RunnableInsertOperation(String name) {
         this.name = name;
-        System.out.println("Creating " + name);
     }
 
     @Override
@@ -29,7 +28,7 @@ public class RunnableCRUDOperation implements Runnable{
         try {
             conn = DataSource.getInstance().getConnection();
             PreparedStatement pr  = conn.prepareStatement("insert into university (name, location) VALUES ( ?, ?)");
-            pr.setString(1, "New " + this.name);
+            pr.setString(1, Thread.currentThread().getName());
             pr.setString(2, "Location " + this.name);
             int number = pr.executeUpdate();
             System.out.println("NNumber is " + number);
